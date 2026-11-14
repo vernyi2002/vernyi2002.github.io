@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Teo Vern Yi — Hardware for Speech AI</title>
 <meta name="description" content="Teo Vern Yi — MSc student at NTU GIEE working on FPGA acceleration of speech foundation models.">
+<script>document.documentElement.classList.add("js");</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
@@ -63,8 +64,18 @@
   }
   .social a:hover { background: var(--text); color: var(--bg); }
 
+  /* Pages: one section shown at a time (falls back to one long page if JavaScript is off) */
+  .js section.page { display: none; }
+  .js section.page.active { display: block; animation: fade .25s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  nav a.active { color: var(--text); }
+  nav a.active::after {
+    content: ""; display: block; height: 2px; background: var(--accent);
+    border-radius: 2px; margin-top: 2px;
+  }
+
   /* Main sections */
-  section.main { padding-top: 80px; }
+  section.main { padding-top: 48px; }
   .sec-head { margin-bottom: 8px; }
   .sec-head .num { font-size: 14px; font-weight: 700; color: var(--accent); }
   .sec-head h2 { font-size: 34px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; margin-top: 2px; }
@@ -123,7 +134,9 @@
   footer { margin-top: 80px; padding: 32px 0; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
 
   @media (max-width: 560px) {
-    nav li:nth-child(n+3) { display: none; }
+    header.top .wrap { flex-direction: column; align-items: flex-start; gap: 10px; }
+    nav ul { justify-content: flex-start; gap: 16px; }
+    nav a { font-size: 14px; }
     .row { flex-direction: column; gap: 4px; }
     .entry h3 { font-size: 21px; }
     .sec-head h2 { font-size: 28px; }
@@ -150,7 +163,7 @@
 <main class="wrap">
 
   <!-- ============ 1. ABOUT ============ -->
-  <section id="about">
+  <section class="page" id="about">
     <div class="hero">
       <!-- Upload a square photo named avatar.jpg to the repo. Until then, the initials show. -->
       <div class="avatar">
@@ -201,7 +214,7 @@
   </section>
 
   <!-- ============ 2. WORK ============ -->
-  <section class="main" id="work">
+  <section class="main page"id="work">
     <div class="sec-head">
       <div class="num">02</div>
       <h2>Work</h2>
@@ -275,7 +288,7 @@
   </section>
 
   <!-- ============ 3. ACTIVITIES ============ -->
-  <section class="main" id="activities">
+  <section class="main page"id="activities">
     <div class="sec-head">
       <div class="num">03</div>
       <h2>Activities</h2>
@@ -336,7 +349,7 @@
   </section>
 
   <!-- ============ 4. BEYOND ENGINEERING ============ -->
-  <section class="main" id="beyond">
+  <section class="main page"id="beyond">
     <div class="sec-head">
       <div class="num">04</div>
       <h2>Beyond Engineering</h2>
@@ -364,7 +377,7 @@
   </section>
 
   <!-- ============ 5. CONTACT ============ -->
-  <section class="main" id="contact">
+  <section class="main page"id="contact">
     <div class="sec-head">
       <div class="num">05</div>
       <h2>Contact</h2>
@@ -383,6 +396,25 @@
 <footer>
   <div class="wrap">© 2026 Teo Vern Yi</div>
 </footer>
+
+<script>
+  // Show one page at a time, chosen by the URL hash (#about, #work, ...).
+  const pages = [...document.querySelectorAll("section.page")];
+  const links = [...document.querySelectorAll("nav a")];
+
+  function show() {
+    const id = location.hash.slice(1);
+    const target = pages.find(p => p.id === id) || pages[0];
+    pages.forEach(p => p.classList.toggle("active", p === target));
+    links.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + target.id));
+    document.title = target.id === "about"
+      ? "Teo Vern Yi — Hardware for Speech AI"
+      : target.querySelector("h2").textContent + " — Teo Vern Yi";
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", show);
+  show();
+</script>
 
 </body>
 </html>
