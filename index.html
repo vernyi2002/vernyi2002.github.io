@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teo Vern Yi — Hardware for Speech AI</title>
+<meta name="description" content="Teo Vern Yi — MSc student at NTU GIEE working on FPGA acceleration of speech foundation models.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f7f5f0;
+    --ink: #1c1b19;
+    --muted: #6b675f;
+    --line: #dedad1;
+    --seal: #b8322a;
+    --card: #ffffff;
+    --max: 860px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  a { color: inherit; text-decoration-color: var(--seal); text-underline-offset: 3px; }
+  a:hover { color: var(--seal); }
+
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(247,245,240,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .inner {
+    max-width: var(--max); margin: 0 auto; padding: 14px 24px;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  }
+  nav .name { font-family: "Fraunces", serif; font-weight: 600; text-decoration: none; }
+  nav ul { list-style: none; display: flex; gap: 20px; flex-wrap: wrap; }
+  nav ul a { text-decoration: none; font-size: 14px; color: var(--muted); }
+  nav ul a:hover { color: var(--ink); }
+
+  main { max-width: var(--max); margin: 0 auto; padding: 0 24px 80px; }
+
+  header.hero { padding: 88px 0 56px; border-bottom: 1px solid var(--line); }
+  .hero .seal {
+    display: inline-block; font-family: "Fraunces", serif; font-size: 15px;
+    color: var(--seal); border: 1.5px solid var(--seal); border-radius: 4px;
+    padding: 2px 8px; margin-bottom: 20px; letter-spacing: 0.08em;
+  }
+  .hero h1 {
+    font-family: "Fraunces", serif; font-weight: 400;
+    font-size: clamp(38px, 6vw, 56px); line-height: 1.1; letter-spacing: -0.01em;
+  }
+  .hero p.lede { font-size: 19px; color: var(--muted); max-width: 620px; margin-top: 18px; }
+  .hero .links { margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 9px 16px; border: 1px solid var(--ink);
+    border-radius: 999px; font-size: 14px; font-weight: 500; text-decoration: none;
+  }
+  .btn.primary { background: var(--ink); color: var(--paper); }
+  .btn.primary:hover { background: var(--seal); border-color: var(--seal); color: #fff; }
+  .btn:hover { border-color: var(--seal); }
+
+  section { padding: 56px 0 8px; }
+  section > h2 {
+    font-family: "Fraunces", serif; font-weight: 600; font-size: 28px; margin-bottom: 24px;
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  section > h2 .num { font-family: "JetBrains Mono", monospace; font-size: 13px; color: var(--seal); font-weight: 400; }
+
+  .feature {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 32px; margin-bottom: 20px;
+  }
+  .feature h3 { font-family: "Fraunces", serif; font-size: 24px; font-weight: 600; line-height: 1.25; }
+  .feature .sub { color: var(--muted); margin: 6px 0 18px; }
+  .feature p + p { margin-top: 12px; }
+  .feature ul { margin: 14px 0 0 20px; }
+  .feature li { margin-bottom: 6px; }
+  .note {
+    margin-top: 20px; padding: 12px 14px; border-left: 3px solid var(--seal);
+    background: #fbf3f2; font-size: 14px; color: var(--muted);
+  }
+
+  .flow {
+    margin: 22px 0 6px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    font-family: "JetBrains Mono", monospace; font-size: 13px;
+  }
+  .flow span.box { border: 1px solid var(--ink); border-radius: 6px; padding: 6px 10px; background: var(--paper); }
+  .flow span.arrow { color: var(--seal); }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+  .tag {
+    font-family: "JetBrains Mono", monospace; font-size: 12px;
+    border: 1px solid var(--line); border-radius: 4px; padding: 2px 8px; color: var(--muted);
+  }
+  .tag.status { border-color: var(--seal); color: var(--seal); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 22px; display: flex; flex-direction: column;
+  }
+  .card h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
+  .card p { color: var(--muted); font-size: 15px; flex: 1; }
+  .card .tags { margin-top: 14px; }
+  .card a.more { margin-top: 14px; font-size: 14px; font-weight: 500; }
+
+  .timeline .item {
+    display: grid; grid-template-columns: 150px 1fr; gap: 20px;
+    padding: 18px 0; border-top: 1px solid var(--line);
+  }
+  .timeline .item:last-child { border-bottom: 1px solid var(--line); }
+  .timeline .when { font-family: "JetBrains Mono", monospace; font-size: 13px; color: var(--muted); padding-top: 3px; }
+  .timeline h3 { font-size: 17px; font-weight: 600; }
+  .timeline .org { color: var(--muted); }
+  .timeline p.desc { margin-top: 6px; font-size: 15px; }
+
+  .contact p { font-size: 18px; max-width: 560px; }
+  .contact .links { margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+  footer {
+    max-width: var(--max); margin: 0 auto; padding: 28px 24px;
+    border-top: 1px solid var(--line); color: var(--muted); font-size: 13px;
+  }
+
+  @media (max-width: 600px) {
+    nav ul { display: none; }
+    .timeline .item { grid-template-columns: 1fr; gap: 4px; }
+    .feature { padding: 22px; }
+    header.hero { padding-top: 56px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a class="name" href="#">Teo Vern Yi</a>
+    <ul>
+      <li><a href="#research">Research</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#others">Others</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <header class="hero">
+    <span class="seal">張文奕</span>
+    <h1>Making speech AI run efficiently on hardware.</h1>
+    <p class="lede">
+      I'm an MSc student at National Taiwan University's Graduate Institute of Electronics Engineering,
+      in the Energy-Efficient Circuits and Systems Lab. I design FPGA accelerators for speech
+      foundation models, from RTL to the software driver that runs them.
+    </p>
+    <div class="links">
+      <a class="btn primary" href="#research">See my research</a>
+      <a class="btn" href="https://github.com/vernyi2002">GitHub</a>
+      <a class="btn" href="LINKEDIN_URL">LinkedIn</a>
+      <a class="btn" href="cv.pdf">CV (PDF)</a>
+    </div>
+  </header>
+
+  <section id="research">
+    <h2><span class="num">01</span>Research</h2>
+    <article class="feature">
+      <h3>FPGA Acceleration of the DistilHuBERT Speech Foundation Model</h3>
+      <p class="sub">Energy-Efficient Circuits and Systems Lab, NTU · Advisor: Prof. Tsung-Te Liu · 2025–present</p>
+
+      <p>
+        DistilHuBERT is a compressed self-supervised speech model that turns raw audio into
+        general-purpose representations for downstream tasks such as intent classification and
+        speaker identification. I'm building a hardware/software co-design on an
+        Intel Stratix 10 SoC (Apollo S10 SoM), where the FPGA runs the model and the
+        on-chip ARM processor (HPS) drives it.
+      </p>
+
+      <div class="flow" aria-label="Weight streaming data path">
+        <span class="box">HPS DDR4</span><span class="arrow">→</span>
+        <span class="box">AXI bridge</span><span class="arrow">→</span>
+        <span class="box">On-chip M20K buffers</span><span class="arrow">→</span>
+        <span class="box">Compute arbiter</span>
+      </div>
+
+      <ul>
+        <li><strong>Architecture:</strong> designed layer-by-layer weight streaming from HPS DRAM into on-chip memory, so the whole model runs without fitting all weights on-chip at once.</li>
+        <li><strong>RTL:</strong> wrote the bridge controller (Verilog) connecting the accelerator to the HPS over AXI4 / AXI4-Lite, replacing a flat-memory simulation model.</li>
+        <li><strong>Verification:</strong> built a multi-layer integration testbench covering every encoder layer, checked against golden reference outputs.</li>
+        <li><strong>Bring-up:</strong> took the design from Quartus / Platform Designer through flashing and boot to running on the board, debugging issues across clocking, memory latency, address mapping and the boot flow.</li>
+        <li><strong>Software:</strong> turned the testbench flow into a Linux C driver that runs inference from the HPS through memory-mapped AXI.</li>
+        <li><strong>Status:</strong> the full model runs on the FPGA with SUPERB downstream heads for intent classification and speaker identification. Current work is timing optimization, more downstream tasks, and sparsity.</li>
+      </ul>
+
+      <div class="tags">
+        <span class="tag">Verilog</span><span class="tag">Intel Stratix 10 SoC</span>
+        <span class="tag">AXI4</span><span class="tag">Quartus</span><span class="tag">C / Linux</span>
+        <span class="tag">HW/SW co-design</span>
+      </div>
+
+      <p class="note">
+        This is ongoing lab research, so the source code isn't public. I'm happy to talk through
+        the design in more detail. Just get in touch.
+      </p>
+    </article>
+  </section>
+
+  <section id="projects">
+    <h2><span class="num">02</span>Projects</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Verilog ALU / Compute Core</h3>
+        <p>A compute core with opcode decoding and signed arithmetic, organized with macro definitions and include files.</p>
+        <div class="tags"><span class="tag">Verilog</span><span class="tag">RTL</span></div>
+        <a class="more" href="https://github.com/vernyi2002/REPO_NAME">View repo →</a>
+      </div>
+
+      <div class="card">
+        <h3>Dictionary Learning: A Tutorial</h3>
+        <p>A 20+ page tutorial on sparse coding and dictionary learning, focused on the SBDMS method. Written for NTU's Time-Frequency Analysis and Wavelet Transform course.</p>
+        <div class="tags"><span class="tag">Signal processing</span><span class="tag">LaTeX</span><span class="tag status">In progress</span></div>
+        <a class="more" href="#">Read the paper →</a>
+      </div>
+
+      <div class="card">
+        <h3>DeepMIR Final Project</h3>
+        <p>Team project in deep learning for music: generative music with controllability, exploring image-to-music and cross-language singer-style generation.</p>
+        <div class="tags"><span class="tag">PyTorch</span><span class="tag">Music AI</span><span class="tag status">In progress</span></div>
+        <a class="more" href="#">Details →</a>
+      </div>
+
+      <div class="card">
+        <h3>Postcards from Vern</h3>
+        <p>A photography website where visitors pick one of my travel photos from Malaysia, Taiwan and Singapore, write a message, and send it as an email postcard.</p>
+        <div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Tailwind</span><span class="tag status">In progress</span></div>
+        <a class="more" href="#">Visit site →</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <h2><span class="num">03</span>Experience &amp; Education</h2>
+    <div class="timeline">
+      <div class="item">
+        <div class="when">2025 – present</div>
+        <div>
+          <h3>MSc, Graduate Institute of Electronics Engineering</h3>
+          <div class="org">National Taiwan University · Taipei</div>
+          <p class="desc">Energy-Efficient Circuits and Systems Lab. Supported by the EECS Global Elite Cultivation Fellowship and the NTU Outstanding International Graduate Student Scholarship.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="when">YYYY</div>
+        <div>
+          <h3>Pre-Silicon Validation Engineer Intern</h3>
+          <div class="org">Intel Microelectronics · Malaysia</div>
+          <p class="desc">Add one or two lines on what you validated and the tools you used.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="when">YYYY – YYYY</div>
+        <div>
+          <h3>Bachelor of Electrical Engineering</h3>
+          <div class="org">Universiti Malaya · Kuala Lumpur</div>
+          <p class="desc">CGPA 3.88 / 4.00</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="others">
+    <h2><span class="num">04</span>Others</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Cycling</h3>
+        <p>Riding around Taiwan lately. Add a favorite route, a photo or a distance here.</p>
+      </div>
+      <div class="card">
+        <h3>Photography</h3>
+        <p>Walking around and photographing everyday moments. It's how I slow down and look more closely, away from the lab.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2><span class="num">05</span>Contact</h2>
+    <p>I'm open to roles in digital IC design, FPGA, and hardware for AI in Taiwan and Malaysia. Feel free to reach out.</p>
+    <div class="links">
+      <a class="btn primary" href="mailto:YOUR_EMAIL">Email me</a>
+      <a class="btn" href="LINKEDIN_URL">LinkedIn</a>
+      <a class="btn" href="https://github.com/vernyi2002">GitHub</a>
+    </div>
+  </section>
+</main>
+
+<footer>© 2026 Teo Vern Yi · Speaks English, Mandarin and Malay</footer>
+
+</body>
+</html>
