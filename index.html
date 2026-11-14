@@ -124,6 +124,35 @@
   .interests { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; padding: 22px 0; border-bottom: 1px solid var(--line); }
   .interests li { font-size: 15px; font-weight: 500; padding: 6px 14px; border-radius: 8px; background: var(--soft); }
 
+  /* Activity photo cards */
+  .acts { display: grid; grid-template-columns: 1fr 1fr; gap: 36px 24px; padding: 28px 0 32px; border-bottom: 1px solid var(--line); }
+  .act.wide { grid-column: 1 / -1; }
+  .act .media {
+    position: relative; aspect-ratio: 4 / 3; border-radius: 12px; overflow: hidden;
+    background: var(--soft); display: flex; align-items: center; justify-content: center;
+  }
+  .act.wide .media { aspect-ratio: 16 / 9; }
+  .act .media .ph { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; color: var(--muted); opacity: .55; text-align: center; padding: 0 16px; }
+  .act .media img {
+    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+    cursor: zoom-in; transition: transform .4s ease;
+  }
+  .act .media:hover img { transform: scale(1.03); }
+  .act .when { font-size: 13px; font-weight: 500; color: var(--accent); margin-top: 14px; }
+  .act h3 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.35; margin-top: 2px; }
+  .act .org { color: var(--muted); font-size: 15px; }
+  .act p { font-size: 15px; margin-top: 6px; }
+
+  /* Photo viewer */
+  dialog.viewer { border: 0; padding: 0; background: transparent; max-width: min(92vw, 1100px); margin: auto; }
+  dialog.viewer::backdrop { background: rgba(0, 0, 0, .85); }
+  dialog.viewer img { display: block; max-width: 100%; max-height: 82vh; border-radius: 10px; margin: 0 auto; }
+  dialog.viewer p { color: #ddd; font-size: 14px; text-align: center; margin-top: 12px; }
+  dialog.viewer button {
+    position: fixed; top: 16px; right: 20px; background: none; border: 0;
+    color: #fff; font-size: 32px; line-height: 1; cursor: pointer;
+  }
+
   /* Contact */
   .contact-list { list-style: none; }
   .contact-list li { display: flex; justify-content: space-between; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line); }
@@ -138,6 +167,8 @@
     nav ul { justify-content: flex-start; gap: 16px; }
     nav a { font-size: 14px; }
     .row { flex-direction: column; gap: 4px; }
+    .acts { grid-template-columns: 1fr; gap: 32px; }
+    .act.wide .media { aspect-ratio: 4 / 3; }
     .entry h3 { font-size: 21px; }
     .sec-head h2 { font-size: 28px; }
   }
@@ -169,7 +200,7 @@
       <div class="avatar">
         <img src="avatar.jpg" alt="Teo Vern Yi" onerror="this.parentNode.textContent='TV';">
       </div>
-      <h1>Hey, I'm Teo!<br><span class="role">Hardware engineer for speech AI.</span></h1>
+      <h1>Hey, I'm Vern Yi!<br><span class="role">Hardware engineer for speech AI.</span></h1>
       <p>
         I'm an MSc student at <strong>National Taiwan University</strong>'s Graduate Institute of
         Electronics Engineering, in the Energy-Efficient Circuits and Systems Lab under
@@ -178,8 +209,8 @@
       </p>
       <div class="social">
         <a href="https://github.com/vernyi2002">GitHub</a>
-        <a href="LINKEDIN_URL">LinkedIn</a>
-        <a href="mailto:YOUR_EMAIL">Email</a>
+        <a href="https://www.linkedin.com/in/vern-yi-teo-314613177/">LinkedIn</a>
+        <a href="mailto:teovernyi@gmail.com">Email</a>
         <a href="cv.pdf">CV</a>
       </div>
     </div>
@@ -199,7 +230,17 @@
         <div class="org">Universiti Malaya · Kuala Lumpur, Malaysia</div>
         <p>CGPA 3.88 / 4.00</p>
       </div>
-      <div class="when">YYYY – YYYY</div>
+      <div class="when">2021 – 2025</div>
+    </div>
+
+    <div class="label">Industry Experience</div>
+    <div class="row">
+      <div>
+        <h3>Pre-Silicon Validation Engineer Intern</h3>
+        <div class="org">Intel Microelectronics (M) Sdn Bhd · Penang, Malaysia</div>
+        <p>Wrote Python automation to enforce standardized full test names across hundreds to thousands of test cases in the pre-silicon validation flow, so commented-out tests stay unambiguous at sign-off. Built Perl scripts to audit test-name compliance before model submission, and wrote SystemVerilog assertions to check signal-forcing behavior in simulation.</p>
+      </div>
+      <div class="when">Jul – Sep 2024</div>
     </div>
 
     <div class="label">Research Interests</div>
@@ -275,16 +316,6 @@
       <p class="excerpt">Add one or two lines: what was being detected, the data you used, and the result.</p>
       <div class="tags"><span>CNN</span><span>Python</span></div>
     </article>
-
-    <div class="label">Industry Experience</div>
-    <div class="row">
-      <div>
-        <h3>Pre-Silicon Validation Engineer Intern</h3>
-        <div class="org">Intel Microelectronics · Malaysia</div>
-        <p>Add one or two lines on what you validated and the tools you used.</p>
-      </div>
-      <div class="when">YYYY</div>
-    </div>
   </section>
 
   <!-- ============ 3. ACTIVITIES ============ -->
@@ -295,56 +326,146 @@
       <p>Things I've done outside my main academic work.</p>
     </div>
 
-    <div class="label">Competitions &amp; Awards</div>
+    <!--
+      PHOTOS: put images in an "images/activities/" folder using the file names below.
+      Until a photo exists, the card shows a plain placeholder tile. Click a photo to view it larger.
+      Landscape photos work best (4:3; the wide Huawei card is 16:9).
+    -->
+
+    <div class="label">Competitions &amp; Programmes</div>
+    <div class="acts">
+      <article class="act wide">
+        <div class="media">
+          <span class="ph">Huawei Seeds for the Future</span>
+          <img src="images/activities/huawei.jpg" alt="Huawei Seeds for the Future 2023" loading="lazy" onerror="this.remove()">
+        </div>
+        <div class="when">2023</div>
+        <h3>Huawei Seeds for the Future</h3>
+        <div class="org">Huawei · Malaysia</div>
+        <p>One of about 20 students selected in Malaysia. Represented Universiti Malaya in the Tech4Good competition, leading development of a natural-disaster alert app on Huawei Cloud with real-time GPS mapping and crowdsourced flood and earthquake reports.</p>
+      </article>
+      <article class="act">
+        <div class="media">
+          <span class="ph">EDMAT 44</span>
+          <img src="images/activities/edmat.jpg" alt="Bloobot team at EDMAT 44 International Camp" loading="lazy" onerror="this.remove()">
+        </div>
+        <div class="when">YYYY · Champion</div>
+        <h3>EDMAT 44 International Camp</h3>
+        <div class="org">Universiti Malaya</div>
+        <p>Worked with students from a Cambodian university to design Bloobot, an automated blood-donation cobot that makes the donation workflow safer and more efficient.</p>
+      </article>
+      <article class="act">
+        <div class="media">
+          <span class="ph">EE Makerthon</span>
+          <img src="images/activities/makerthon.jpg" alt="Disaster-response drone at EE Makerthon 2023" loading="lazy" onerror="this.remove()">
+        </div>
+        <div class="when">2023 · 1st Runner Up</div>
+        <h3>Electrical Engineering Makerthon</h3>
+        <div class="org">Universiti Malaya</div>
+        <p>Built a disaster-response drone from scratch with smoke sensors, GPS and payload delivery, programmed on an Arduino UNO to complete autonomous navigation challenges.</p>
+      </article>
+    </div>
+    <!-- Add competitions here once results are in, e.g. the NTU student ID card design competition. -->
+
+    <div class="label">Scholarships</div>
     <div class="row">
       <div>
         <h3>EECS Global Elite Cultivation Fellowship</h3>
         <div class="org">National Taiwan University</div>
       </div>
-      <div class="when">YYYY</div>
+      <div class="when">2025</div>
     </div>
     <div class="row">
       <div>
         <h3>NTU Outstanding International Graduate Student Scholarship</h3>
         <div class="org">National Taiwan University</div>
       </div>
-      <div class="when">YYYY</div>
-    </div>
-    <!-- Add competitions here once results are in, e.g. the NTU student ID card design competition. -->
-
-    <div class="label">Technical Programmes</div>
-    <div class="row">
-      <div>
-        <h3>Huawei Seeds for the Future</h3>
-        <div class="org">Huawei · Malaysia</div>
-        <p>One of about 20 students selected in Malaysia.</p>
-      </div>
-      <div class="when">2023</div>
+      <div class="when">2025</div>
     </div>
 
     <div class="label">Leadership &amp; Ambassadorship</div>
-    <div class="row">
-      <div>
+    <div class="acts">
+      <article class="act">
+        <div class="media">
+          <span class="ph">SEMICON Taiwan</span>
+          <img src="images/activities/semicon.jpg" alt="SEMICON Taiwan campus ambassador" loading="lazy" onerror="this.remove()">
+        </div>
+        <div class="when">YYYY</div>
         <h3>SEMICON Taiwan Campus Ambassador</h3>
         <div class="org">SEMICON Taiwan</div>
+      </article>
+      <article class="act">
+        <div class="media">
+          <span class="ph">NTU Lab</span>
+          <img src="images/activities/lab.jpg" alt="Energy-Efficient Circuits and Systems Lab" loading="lazy" onerror="this.remove()">
+        </div>
+        <div class="when">2026 – present</div>
+        <h3>Lab Coordinator</h3>
+        <div class="org">Energy-Efficient Circuits and Systems Lab, NTU</div>
+        <p>Organizing lab meetings, onboarding and supporting new members, and coordinating lab inspections.</p>
+      </article>
+      <article class="act">
+        <div class="media">
+          <span class="ph">馬大華樂團</span>
+          <img src="images/activities/orchestra.jpg" alt="University of Malaya Chinese Orchestra performance" loading="lazy" onerror="this.remove()">
+        </div>
+        <div class="when">2021 – 2024</div>
+        <h3>Low-String Section Leader &amp; Principal Double Bass</h3>
+        <div class="org">University of Malaya Chinese Orchestra (馬大華樂團)</div>
+        <p>Led the low-string section: managed scores and interviewed and mentored new members. Also on the multimedia team in 2023/24, covering Instagram, posters and event photography.</p>
+      </article>
+      <article class="act">
+        <div class="media">
+          <span class="ph">Industrial Open Day</span>
+          <img src="images/activities/open-day.jpg" alt="Emceeing at Industrial Open Day 2023" loading="lazy" onerror="this.remove()">
+        </div>
+        <div class="when">2023</div>
+        <h3>Head of Protocol Bureau, Industrial Open Day</h3>
+        <div class="org">Universiti Malaya</div>
+        <p>Directed the full event flow, coordinated VIP hosting, and emceed for 200+ attendees.</p>
+      </article>
+    </div>
+
+    <div class="label">Student Committees</div>
+    <div class="row">
+      <div>
+        <h3>Executive of Industrial Relations</h3>
+        <div class="org">Malaya Electrical Student Association</div>
+        <p>Secured sponsorships, worked with industry partners to organize engineering talks, and moderated sessions as emcee.</p>
+      </div>
+      <div class="when">2022 – 2023</div>
+    </div>
+    <div class="row">
+      <div>
+        <h3>Executive of Academy</h3>
+        <div class="org">Universiti Malaya Student Union</div>
+        <p>Managed communications with class representatives, contributed to the UMSU-Engine handbook, and ran student feedback surveys.</p>
+      </div>
+      <div class="when">2022 – 2023</div>
+    </div>
+    <div class="row">
+      <div>
+        <h3>Executive of Delegation Bureau, EDMAT 44</h3>
+        <div class="org">Universiti Malaya</div>
+        <p>Coordinated outreach to international universities and handled overseas participants' registration and visa support.</p>
       </div>
       <div class="when">YYYY</div>
     </div>
     <div class="row">
       <div>
-        <h3>Lab Coordinator</h3>
-        <div class="org">Energy-Efficient Circuits and Systems Lab, NTU</div>
-        <p>Organizing lab meetings, onboarding and supporting new members, and coordinating lab inspections.</p>
+        <h3>Executive of Registration Bureau, Socrates Run</h3>
+        <div class="org">Universiti Malaya</div>
+        <p>Built the event website and ran participant registration and communications.</p>
       </div>
-      <div class="when">2026 – present</div>
+      <div class="when">2023</div>
     </div>
     <div class="row">
       <div>
-        <h3>Low-String Section Leader &amp; Principal Double Bass</h3>
-        <div class="org">University of Malaya Chinese Orchestra (馬大華樂團)</div>
-        <p>Led the low-string section: managed scores and interviewed and mentored new members. Also on the multimedia team in 2023/24, covering Instagram, posters and event photography.</p>
+        <h3>Other committee roles</h3>
+        <div class="org">Universiti Malaya</div>
+        <p>Malaya Makerthon 2022 (protocol, emcee and pitching-day scripts) · EE Makerthon 2022 (competition logistics) · 16th Crosstalk (publication design) · Feseni KK12 (publicity and Instagram)</p>
       </div>
-      <div class="when">2021 – 2024</div>
+      <div class="when">2022 – 2023</div>
     </div>
   </section>
 
@@ -393,6 +514,12 @@
 
 </main>
 
+<dialog class="viewer" aria-label="Photo viewer">
+  <button type="button" aria-label="Close">×</button>
+  <img src="" alt="">
+  <p></p>
+</dialog>
+
 <footer>
   <div class="wrap">© 2026 Teo Vern Yi</div>
 </footer>
@@ -414,6 +541,18 @@
   }
   window.addEventListener("hashchange", show);
   show();
+
+  // Click an activity photo to view it larger.
+  const viewer = document.querySelector("dialog.viewer");
+  document.addEventListener("click", e => {
+    const img = e.target.closest(".act .media img");
+    if (!img || !viewer.showModal) return;
+    viewer.querySelector("img").src = img.src;
+    viewer.querySelector("img").alt = img.alt;
+    viewer.querySelector("p").textContent = img.alt;
+    viewer.showModal();
+  });
+  viewer.addEventListener("click", e => { if (e.target !== viewer.querySelector("img")) viewer.close(); });
 </script>
 
 </body>
