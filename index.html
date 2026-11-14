@@ -7,301 +7,382 @@
 <meta name="description" content="Teo Vern Yi — MSc student at NTU GIEE working on FPGA acceleration of speech foundation models.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #f7f5f0;
-    --ink: #1c1b19;
-    --muted: #6b675f;
-    --line: #dedad1;
-    --seal: #b8322a;
-    --card: #ffffff;
-    --max: 860px;
+    --bg: #ffffff;
+    --text: #1a1a1a;
+    --muted: #8a8a8a;
+    --soft: #f4f4f4;
+    --line: #ececec;
+    --accent: #e8483b;
+    --col: 680px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141414; --text: #ededed; --muted: #8f8f8f;
+      --soft: #1f1f1f; --line: #2a2a2a; --accent: #ff6a5c;
+    }
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-padding-top: 24px; }
   body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: "Inter", system-ui, sans-serif;
-    font-size: 16px;
-    line-height: 1.65;
+    background: var(--bg); color: var(--text);
+    font-family: "DM Sans", system-ui, sans-serif;
+    font-size: 17px; line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
   }
-  a { color: inherit; text-decoration-color: var(--seal); text-underline-offset: 3px; }
-  a:hover { color: var(--seal); }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: var(--col); margin: 0 auto; padding: 0 24px; }
 
-  nav {
-    position: sticky; top: 0; z-index: 10;
-    background: rgba(247,245,240,0.92);
-    backdrop-filter: blur(6px);
-    border-bottom: 1px solid var(--line);
-  }
-  nav .inner {
-    max-width: var(--max); margin: 0 auto; padding: 14px 24px;
-    display: flex; justify-content: space-between; align-items: center; gap: 16px;
-  }
-  nav .name { font-family: "Fraunces", serif; font-weight: 600; text-decoration: none; }
-  nav ul { list-style: none; display: flex; gap: 20px; flex-wrap: wrap; }
-  nav ul a { text-decoration: none; font-size: 14px; color: var(--muted); }
-  nav ul a:hover { color: var(--ink); }
+  /* Header */
+  header.top { padding: 32px 0; }
+  header.top .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .logo { font-weight: 700; font-size: 18px; letter-spacing: -0.01em; white-space: nowrap; }
+  .logo span { color: var(--accent); }
+  nav ul { list-style: none; display: flex; gap: 22px; flex-wrap: wrap; justify-content: flex-end; }
+  nav a { font-size: 15px; font-weight: 500; color: var(--muted); transition: color .2s; }
+  nav a:hover { color: var(--text); }
 
-  main { max-width: var(--max); margin: 0 auto; padding: 0 24px 80px; }
+  /* Hero */
+  .hero { padding: 48px 0 24px; }
+  .avatar {
+    width: 96px; height: 96px; border-radius: 50%;
+    background: var(--soft); display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 28px; color: var(--muted); margin-bottom: 28px; overflow: hidden;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .hero h1 { font-size: clamp(34px, 6vw, 48px); line-height: 1.15; font-weight: 700; letter-spacing: -0.03em; }
+  .hero h1 .role { color: var(--muted); }
+  .hero p { margin-top: 20px; color: var(--muted); font-size: 18px; }
+  .hero p strong { color: var(--text); font-weight: 500; }
+  .social { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
+  .social a {
+    font-size: 14px; font-weight: 500; padding: 7px 16px; border-radius: 999px;
+    background: var(--soft); transition: background .2s, color .2s;
+  }
+  .social a:hover { background: var(--text); color: var(--bg); }
 
-  header.hero { padding: 88px 0 56px; border-bottom: 1px solid var(--line); }
-  .hero .seal {
-    display: inline-block; font-family: "Fraunces", serif; font-size: 15px;
-    color: var(--seal); border: 1.5px solid var(--seal); border-radius: 4px;
-    padding: 2px 8px; margin-bottom: 20px; letter-spacing: 0.08em;
-  }
-  .hero h1 {
-    font-family: "Fraunces", serif; font-weight: 400;
-    font-size: clamp(38px, 6vw, 56px); line-height: 1.1; letter-spacing: -0.01em;
-  }
-  .hero p.lede { font-size: 19px; color: var(--muted); max-width: 620px; margin-top: 18px; }
-  .hero .links { margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap; }
-  .btn {
-    display: inline-block; padding: 9px 16px; border: 1px solid var(--ink);
-    border-radius: 999px; font-size: 14px; font-weight: 500; text-decoration: none;
-  }
-  .btn.primary { background: var(--ink); color: var(--paper); }
-  .btn.primary:hover { background: var(--seal); border-color: var(--seal); color: #fff; }
-  .btn:hover { border-color: var(--seal); }
+  /* Main sections */
+  section.main { padding-top: 80px; }
+  .sec-head { margin-bottom: 8px; }
+  .sec-head .num { font-size: 14px; font-weight: 700; color: var(--accent); }
+  .sec-head h2 { font-size: 34px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.2; margin-top: 2px; }
+  .sec-head p { color: var(--muted); margin-top: 4px; }
 
-  section { padding: 56px 0 8px; }
-  section > h2 {
-    font-family: "Fraunces", serif; font-weight: 600; font-size: 28px; margin-bottom: 24px;
-    display: flex; align-items: baseline; gap: 12px;
-  }
-  section > h2 .num { font-family: "JetBrains Mono", monospace; font-size: 13px; color: var(--seal); font-weight: 400; }
-
-  .feature {
-    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
-    padding: 32px; margin-bottom: 20px;
-  }
-  .feature h3 { font-family: "Fraunces", serif; font-size: 24px; font-weight: 600; line-height: 1.25; }
-  .feature .sub { color: var(--muted); margin: 6px 0 18px; }
-  .feature p + p { margin-top: 12px; }
-  .feature ul { margin: 14px 0 0 20px; }
-  .feature li { margin-bottom: 6px; }
-  .note {
-    margin-top: 20px; padding: 12px 14px; border-left: 3px solid var(--seal);
-    background: #fbf3f2; font-size: 14px; color: var(--muted);
+  /* Sub-section labels */
+  .label {
+    font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--muted); padding-bottom: 12px; border-bottom: 1px solid var(--line);
+    margin-top: 44px;
   }
 
-  .flow {
-    margin: 22px 0 6px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
-    font-family: "JetBrains Mono", monospace; font-size: 13px;
-  }
-  .flow span.box { border: 1px solid var(--ink); border-radius: 6px; padding: 6px 10px; background: var(--paper); }
-  .flow span.arrow { color: var(--seal); }
+  /* Post-style entries */
+  .entry { padding: 30px 0; border-bottom: 1px solid var(--line); }
+  .entry h3 { font-size: 24px; line-height: 1.3; font-weight: 700; letter-spacing: -0.02em; }
+  .entry h3 a { transition: color .2s; }
+  .entry h3 a:hover { color: var(--accent); }
+  .meta { font-size: 14px; color: var(--muted); margin-top: 6px; }
+  .meta .dot { margin: 0 8px; }
+  .meta .status { color: var(--accent); font-weight: 500; }
+  .excerpt { margin-top: 12px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .tags span { font-size: 13px; padding: 3px 12px; border-radius: 999px; background: var(--soft); color: var(--muted); }
 
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
-  .tag {
-    font-family: "JetBrains Mono", monospace; font-size: 12px;
-    border: 1px solid var(--line); border-radius: 4px; padding: 2px 8px; color: var(--muted);
-  }
-  .tag.status { border-color: var(--seal); color: var(--seal); }
+  details { margin-top: 16px; }
+  summary { cursor: pointer; font-size: 15px; font-weight: 500; color: var(--accent); list-style: none; display: inline-block; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: " →"; }
+  details[open] summary::after { content: " ↑"; }
+  details .body { margin-top: 16px; }
+  details .body ul { margin-left: 20px; }
+  details .body li { margin-bottom: 8px; }
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 4px 0 20px; font-size: 14px; }
+  .flow b { font-weight: 500; background: var(--soft); padding: 4px 12px; border-radius: 6px; }
+  .flow i { font-style: normal; color: var(--accent); }
+  .note { margin-top: 20px; padding: 14px 18px; border-radius: 10px; background: var(--soft); font-size: 15px; color: var(--muted); }
 
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
-  .card {
-    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
-    padding: 22px; display: flex; flex-direction: column;
-  }
-  .card h3 { font-size: 17px; font-weight: 600; margin-bottom: 6px; }
-  .card p { color: var(--muted); font-size: 15px; flex: 1; }
-  .card .tags { margin-top: 14px; }
-  .card a.more { margin-top: 14px; font-size: 14px; font-weight: 500; }
+  /* Compact rows */
+  .row { display: flex; justify-content: space-between; gap: 20px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+  .row h3 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.4; }
+  .row .org { color: var(--muted); font-size: 15px; }
+  .row p { font-size: 15px; margin-top: 6px; }
+  .row .when { font-size: 14px; color: var(--muted); white-space: nowrap; padding-top: 2px; }
 
-  .timeline .item {
-    display: grid; grid-template-columns: 150px 1fr; gap: 20px;
-    padding: 18px 0; border-top: 1px solid var(--line);
-  }
-  .timeline .item:last-child { border-bottom: 1px solid var(--line); }
-  .timeline .when { font-family: "JetBrains Mono", monospace; font-size: 13px; color: var(--muted); padding-top: 3px; }
-  .timeline h3 { font-size: 17px; font-weight: 600; }
-  .timeline .org { color: var(--muted); }
-  .timeline p.desc { margin-top: 6px; font-size: 15px; }
+  /* Interests list */
+  .interests { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+  .interests li { font-size: 15px; font-weight: 500; padding: 6px 14px; border-radius: 8px; background: var(--soft); }
 
-  .contact p { font-size: 18px; max-width: 560px; }
-  .contact .links { margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap; }
+  /* Contact */
+  .contact-list { list-style: none; }
+  .contact-list li { display: flex; justify-content: space-between; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .contact-list .k { font-weight: 700; }
+  .contact-list a { color: var(--muted); transition: color .2s; text-align: right; word-break: break-all; }
+  .contact-list a:hover { color: var(--accent); }
 
-  footer {
-    max-width: var(--max); margin: 0 auto; padding: 28px 24px;
-    border-top: 1px solid var(--line); color: var(--muted); font-size: 13px;
-  }
+  footer { margin-top: 80px; padding: 32px 0; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
 
-  @media (max-width: 600px) {
-    nav ul { display: none; }
-    .timeline .item { grid-template-columns: 1fr; gap: 4px; }
-    .feature { padding: 22px; }
-    header.hero { padding-top: 56px; }
+  @media (max-width: 560px) {
+    nav li:nth-child(n+3) { display: none; }
+    .row { flex-direction: column; gap: 4px; }
+    .entry h3 { font-size: 21px; }
+    .sec-head h2 { font-size: 28px; }
   }
 </style>
 </head>
 <body>
 
-<nav>
-  <div class="inner">
-    <a class="name" href="#">Teo Vern Yi</a>
-    <ul>
-      <li><a href="#research">Research</a></li>
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#experience">Experience</a></li>
-      <li><a href="#others">Others</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </div>
-</nav>
-
-<main>
-  <header class="hero">
-    <span class="seal">張文奕</span>
-    <h1>Making speech AI run efficiently on hardware.</h1>
-    <p class="lede">
-      I'm an MSc student at National Taiwan University's Graduate Institute of Electronics Engineering,
-      in the Energy-Efficient Circuits and Systems Lab. I design FPGA accelerators for speech
-      foundation models, from RTL to the software driver that runs them.
-    </p>
-    <div class="links">
-      <a class="btn primary" href="#research">See my research</a>
-      <a class="btn" href="https://github.com/vernyi2002">GitHub</a>
-      <a class="btn" href="LINKEDIN_URL">LinkedIn</a>
-      <a class="btn" href="cv.pdf">CV (PDF)</a>
-    </div>
-  </header>
-
-  <section id="research">
-    <h2><span class="num">01</span>Research</h2>
-    <article class="feature">
-      <h3>FPGA Acceleration of the DistilHuBERT Speech Foundation Model</h3>
-      <p class="sub">Energy-Efficient Circuits and Systems Lab, NTU · Advisor: Prof. Tsung-Te Liu · 2025–present</p>
-
-      <p>
-        DistilHuBERT is a compressed self-supervised speech model that turns raw audio into
-        general-purpose representations for downstream tasks such as intent classification and
-        speaker identification. I'm building a hardware/software co-design on an
-        Intel Stratix 10 SoC (Apollo S10 SoM), where the FPGA runs the model and the
-        on-chip ARM processor (HPS) drives it.
-      </p>
-
-      <div class="flow" aria-label="Weight streaming data path">
-        <span class="box">HPS DDR4</span><span class="arrow">→</span>
-        <span class="box">AXI bridge</span><span class="arrow">→</span>
-        <span class="box">On-chip M20K buffers</span><span class="arrow">→</span>
-        <span class="box">Compute arbiter</span>
-      </div>
-
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#">Teo Vern Yi<span>.</span></a>
+    <nav>
       <ul>
-        <li><strong>Architecture:</strong> designed layer-by-layer weight streaming from HPS DRAM into on-chip memory, so the whole model runs without fitting all weights on-chip at once.</li>
-        <li><strong>RTL:</strong> wrote the bridge controller (Verilog) connecting the accelerator to the HPS over AXI4 / AXI4-Lite, replacing a flat-memory simulation model.</li>
-        <li><strong>Verification:</strong> built a multi-layer integration testbench covering every encoder layer, checked against golden reference outputs.</li>
-        <li><strong>Bring-up:</strong> took the design from Quartus / Platform Designer through flashing and boot to running on the board, debugging issues across clocking, memory latency, address mapping and the boot flow.</li>
-        <li><strong>Software:</strong> turned the testbench flow into a Linux C driver that runs inference from the HPS through memory-mapped AXI.</li>
-        <li><strong>Status:</strong> the full model runs on the FPGA with SUPERB downstream heads for intent classification and speaker identification. Current work is timing optimization, more downstream tasks, and sparsity.</li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#activities">Activities</a></li>
+        <li><a href="#beyond">Beyond</a></li>
+        <li><a href="#contact">Contact</a></li>
       </ul>
+    </nav>
+  </div>
+</header>
 
-      <div class="tags">
-        <span class="tag">Verilog</span><span class="tag">Intel Stratix 10 SoC</span>
-        <span class="tag">AXI4</span><span class="tag">Quartus</span><span class="tag">C / Linux</span>
-        <span class="tag">HW/SW co-design</span>
+<main class="wrap">
+
+  <!-- ============ 1. ABOUT ============ -->
+  <section id="about">
+    <div class="hero">
+      <!-- Upload a square photo named avatar.jpg to the repo. Until then, the initials show. -->
+      <div class="avatar">
+        <img src="avatar.jpg" alt="Teo Vern Yi" onerror="this.parentNode.textContent='TV';">
       </div>
-
-      <p class="note">
-        This is ongoing lab research, so the source code isn't public. I'm happy to talk through
-        the design in more detail. Just get in touch.
+      <h1>Hey, I'm Teo!<br><span class="role">Hardware engineer for speech AI.</span></h1>
+      <p>
+        I'm an MSc student at <strong>National Taiwan University</strong>'s Graduate Institute of
+        Electronics Engineering, in the Energy-Efficient Circuits and Systems Lab under
+        Prof. Tsung-Te Liu. I design FPGA accelerators for speech foundation models, from
+        Verilog RTL to the Linux driver that runs them. I'm from Malaysia and speak English, Mandarin and Malay.
       </p>
+      <div class="social">
+        <a href="https://github.com/vernyi2002">GitHub</a>
+        <a href="LINKEDIN_URL">LinkedIn</a>
+        <a href="mailto:YOUR_EMAIL">Email</a>
+        <a href="cv.pdf">CV</a>
+      </div>
+    </div>
+
+    <div class="label">Education</div>
+    <div class="row">
+      <div>
+        <h3>MSc, Graduate Institute of Electronics Engineering</h3>
+        <div class="org">National Taiwan University · Taipei, Taiwan</div>
+        <p>Energy-Efficient Circuits and Systems Lab</p>
+      </div>
+      <div class="when">2025 – present</div>
+    </div>
+    <div class="row">
+      <div>
+        <h3>Bachelor of Electrical Engineering</h3>
+        <div class="org">Universiti Malaya · Kuala Lumpur, Malaysia</div>
+        <p>CGPA 3.88 / 4.00</p>
+      </div>
+      <div class="when">YYYY – YYYY</div>
+    </div>
+
+    <div class="label">Research Interests</div>
+    <ul class="interests">
+      <li>Hardware acceleration for AI</li>
+      <li>Speech foundation models</li>
+      <li>FPGA &amp; digital IC design</li>
+      <li>HW/SW co-design</li>
+      <li>Energy-efficient computing</li>
+      <li>Model compression: quantization &amp; sparsity</li>
+    </ul>
+  </section>
+
+  <!-- ============ 2. WORK ============ -->
+  <section class="main" id="work">
+    <div class="sec-head">
+      <div class="num">02</div>
+      <h2>Work</h2>
+      <p>Technical and professional experience.</p>
+    </div>
+
+    <div class="label">Research</div>
+    <article class="entry">
+      <h3>FPGA Acceleration of the DistilHuBERT Speech Foundation Model</h3>
+      <div class="meta">NTU Energy-Efficient Circuits and Systems Lab<span class="dot">·</span><span class="status">2025 – present</span></div>
+      <p class="excerpt">
+        A hardware/software co-design that runs a compressed self-supervised speech model on an
+        Intel Stratix 10 SoC. The FPGA runs the model, and the on-chip ARM processor streams
+        weights in and drives inference from Linux.
+      </p>
+      <details>
+        <summary>Read the full write-up</summary>
+        <div class="body">
+          <div class="flow">
+            <b>HPS DDR4</b><i>→</i><b>AXI bridge</b><i>→</i><b>On-chip M20K</b><i>→</i><b>Compute arbiter</b>
+          </div>
+          <ul>
+            <li><strong>Architecture:</strong> layer-by-layer weight streaming from HPS DRAM into on-chip memory, so the full model runs without fitting all weights on-chip at once.</li>
+            <li><strong>RTL:</strong> designed the bridge controller (Verilog) connecting the accelerator to the HPS over AXI4 / AXI4-Lite.</li>
+            <li><strong>Verification:</strong> a multi-layer integration testbench covering every encoder layer, checked against golden reference outputs.</li>
+            <li><strong>Bring-up:</strong> from Quartus / Platform Designer through flashing and boot to running on the board, debugging clocking, memory latency, address mapping and boot-flow issues along the way.</li>
+            <li><strong>Software:</strong> a Linux C driver that runs inference from the HPS through memory-mapped AXI.</li>
+            <li><strong>Status:</strong> running on the FPGA with SUPERB downstream heads for intent classification and speaker identification. Now working on timing optimization, more downstream tasks, and sparsity.</li>
+          </ul>
+          <p class="note">This is ongoing lab research, so the source code isn't public. I'm happy to talk through the design in more detail.</p>
+        </div>
+      </details>
+      <div class="tags"><span>Verilog</span><span>Stratix 10 SoC</span><span>AXI4</span><span>C / Linux</span><span>HW/SW co-design</span></div>
+    </article>
+
+    <div class="label">Selected Projects</div>
+    <article class="entry">
+      <h3><a href="https://github.com/vernyi2002/REPO_NAME">Verilog ALU / Compute Core</a></h3>
+      <div class="meta">RTL design</div>
+      <p class="excerpt">A compute core with opcode decoding and signed arithmetic, organized with macro definitions and include files.</p>
+      <div class="tags"><span>Verilog</span><span>Digital design</span></div>
+    </article>
+    <article class="entry">
+      <h3><a href="#">Dictionary Learning: A Tutorial</a></h3>
+      <div class="meta">Time-Frequency Analysis &amp; Wavelet Transform, NTU<span class="dot">·</span><span class="status">In progress</span></div>
+      <p class="excerpt">A 20+ page tutorial on sparse coding and dictionary learning, focused on the SBDMS method.</p>
+      <div class="tags"><span>Signal processing</span><span>Sparse coding</span><span>LaTeX</span></div>
+    </article>
+    <article class="entry">
+      <h3><a href="#">DeepMIR Final Project</a></h3>
+      <div class="meta">Deep Learning for Music, NTU · Team project<span class="dot">·</span><span class="status">In progress</span></div>
+      <p class="excerpt">Controllable music generation, exploring image-to-music and cross-language singer-style generation.</p>
+      <div class="tags"><span>PyTorch</span><span>Music AI</span></div>
+    </article>
+    <article class="entry">
+      <h3><a href="#">CNN-Based Fault Detection</a></h3>
+      <div class="meta">Universiti Malaya</div>
+      <p class="excerpt">Add one or two lines: what was being detected, the data you used, and the result.</p>
+      <div class="tags"><span>CNN</span><span>Python</span></div>
+    </article>
+
+    <div class="label">Industry Experience</div>
+    <div class="row">
+      <div>
+        <h3>Pre-Silicon Validation Engineer Intern</h3>
+        <div class="org">Intel Microelectronics · Malaysia</div>
+        <p>Add one or two lines on what you validated and the tools you used.</p>
+      </div>
+      <div class="when">YYYY</div>
+    </div>
+  </section>
+
+  <!-- ============ 3. ACTIVITIES ============ -->
+  <section class="main" id="activities">
+    <div class="sec-head">
+      <div class="num">03</div>
+      <h2>Activities</h2>
+      <p>Things I've done outside my main academic work.</p>
+    </div>
+
+    <div class="label">Competitions &amp; Awards</div>
+    <div class="row">
+      <div>
+        <h3>EECS Global Elite Cultivation Fellowship</h3>
+        <div class="org">National Taiwan University</div>
+      </div>
+      <div class="when">YYYY</div>
+    </div>
+    <div class="row">
+      <div>
+        <h3>NTU Outstanding International Graduate Student Scholarship</h3>
+        <div class="org">National Taiwan University</div>
+      </div>
+      <div class="when">YYYY</div>
+    </div>
+    <!-- Add competitions here once results are in, e.g. the NTU student ID card design competition. -->
+
+    <div class="label">Technical Programmes</div>
+    <div class="row">
+      <div>
+        <h3>Huawei Seeds for the Future</h3>
+        <div class="org">Huawei · Malaysia</div>
+        <p>One of about 20 students selected in Malaysia.</p>
+      </div>
+      <div class="when">2023</div>
+    </div>
+
+    <div class="label">Leadership &amp; Ambassadorship</div>
+    <div class="row">
+      <div>
+        <h3>SEMICON Taiwan Campus Ambassador</h3>
+        <div class="org">SEMICON Taiwan</div>
+      </div>
+      <div class="when">YYYY</div>
+    </div>
+    <div class="row">
+      <div>
+        <h3>Lab Coordinator</h3>
+        <div class="org">Energy-Efficient Circuits and Systems Lab, NTU</div>
+        <p>Organizing lab meetings, onboarding and supporting new members, and coordinating lab inspections.</p>
+      </div>
+      <div class="when">2026 – present</div>
+    </div>
+    <div class="row">
+      <div>
+        <h3>Low-String Section Leader &amp; Principal Double Bass</h3>
+        <div class="org">University of Malaya Chinese Orchestra (馬大華樂團)</div>
+        <p>Led the low-string section: managed scores and interviewed and mentored new members. Also on the multimedia team in 2023/24, covering Instagram, posters and event photography.</p>
+      </div>
+      <div class="when">2021 – 2024</div>
+    </div>
+  </section>
+
+  <!-- ============ 4. BEYOND ENGINEERING ============ -->
+  <section class="main" id="beyond">
+    <div class="sec-head">
+      <div class="num">04</div>
+      <h2>Beyond Engineering</h2>
+      <p>What I do away from the lab.</p>
+    </div>
+
+    <div class="label">Photography</div>
+    <article class="entry">
+      <h3><a href="#">Postcards from Vern</a></h3>
+      <div class="meta">Photography website<span class="dot">·</span><span class="status">In progress</span></div>
+      <p class="excerpt">I like walking around and photographing everyday moments. It's how I slow down and look more closely. On this site, visitors pick one of my photos, write a message, and send it as an email postcard.</p>
+      <div class="tags"><span>Next.js</span><span>TypeScript</span><span>Tailwind</span></div>
+    </article>
+
+    <div class="label">Travel</div>
+    <article class="entry">
+      <p class="excerpt">Malaysia, Taiwan, Singapore and beyond. Add a few favorite places or a photo strip here.</p>
+    </article>
+
+    <div class="label">Sports</div>
+    <article class="entry">
+      <h3>Cycling</h3>
+      <p class="excerpt">Riding around Taiwan lately. Add a favorite route, a photo or a distance here.</p>
     </article>
   </section>
 
-  <section id="projects">
-    <h2><span class="num">02</span>Projects</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Verilog ALU / Compute Core</h3>
-        <p>A compute core with opcode decoding and signed arithmetic, organized with macro definitions and include files.</p>
-        <div class="tags"><span class="tag">Verilog</span><span class="tag">RTL</span></div>
-        <a class="more" href="https://github.com/vernyi2002/REPO_NAME">View repo →</a>
-      </div>
-
-      <div class="card">
-        <h3>Dictionary Learning: A Tutorial</h3>
-        <p>A 20+ page tutorial on sparse coding and dictionary learning, focused on the SBDMS method. Written for NTU's Time-Frequency Analysis and Wavelet Transform course.</p>
-        <div class="tags"><span class="tag">Signal processing</span><span class="tag">LaTeX</span><span class="tag status">In progress</span></div>
-        <a class="more" href="#">Read the paper →</a>
-      </div>
-
-      <div class="card">
-        <h3>DeepMIR Final Project</h3>
-        <p>Team project in deep learning for music: generative music with controllability, exploring image-to-music and cross-language singer-style generation.</p>
-        <div class="tags"><span class="tag">PyTorch</span><span class="tag">Music AI</span><span class="tag status">In progress</span></div>
-        <a class="more" href="#">Details →</a>
-      </div>
-
-      <div class="card">
-        <h3>Postcards from Vern</h3>
-        <p>A photography website where visitors pick one of my travel photos from Malaysia, Taiwan and Singapore, write a message, and send it as an email postcard.</p>
-        <div class="tags"><span class="tag">Next.js</span><span class="tag">TypeScript</span><span class="tag">Tailwind</span><span class="tag status">In progress</span></div>
-        <a class="more" href="#">Visit site →</a>
-      </div>
+  <!-- ============ 5. CONTACT ============ -->
+  <section class="main" id="contact">
+    <div class="sec-head">
+      <div class="num">05</div>
+      <h2>Contact</h2>
+      <p>Open to roles in digital IC design, FPGA, and hardware for AI in Taiwan and Malaysia. Get in touch.</p>
     </div>
+    <ul class="contact-list" style="margin-top:24px">
+      <li><span class="k">Email</span><a href="mailto:YOUR_EMAIL">YOUR_EMAIL</a></li>
+      <li><span class="k">GitHub</span><a href="https://github.com/vernyi2002">github.com/vernyi2002</a></li>
+      <li><span class="k">LinkedIn</span><a href="LINKEDIN_URL">LINKEDIN_URL</a></li>
+      <li><span class="k">CV</span><a href="cv.pdf">Download PDF</a></li>
+    </ul>
   </section>
 
-  <section id="experience">
-    <h2><span class="num">03</span>Experience &amp; Education</h2>
-    <div class="timeline">
-      <div class="item">
-        <div class="when">2025 – present</div>
-        <div>
-          <h3>MSc, Graduate Institute of Electronics Engineering</h3>
-          <div class="org">National Taiwan University · Taipei</div>
-          <p class="desc">Energy-Efficient Circuits and Systems Lab. Supported by the EECS Global Elite Cultivation Fellowship and the NTU Outstanding International Graduate Student Scholarship.</p>
-        </div>
-      </div>
-      <div class="item">
-        <div class="when">YYYY</div>
-        <div>
-          <h3>Pre-Silicon Validation Engineer Intern</h3>
-          <div class="org">Intel Microelectronics · Malaysia</div>
-          <p class="desc">Add one or two lines on what you validated and the tools you used.</p>
-        </div>
-      </div>
-      <div class="item">
-        <div class="when">YYYY – YYYY</div>
-        <div>
-          <h3>Bachelor of Electrical Engineering</h3>
-          <div class="org">Universiti Malaya · Kuala Lumpur</div>
-          <p class="desc">CGPA 3.88 / 4.00</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="others">
-    <h2><span class="num">04</span>Others</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Cycling</h3>
-        <p>Riding around Taiwan lately. Add a favorite route, a photo or a distance here.</p>
-      </div>
-      <div class="card">
-        <h3>Photography</h3>
-        <p>Walking around and photographing everyday moments. It's how I slow down and look more closely, away from the lab.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact" class="contact">
-    <h2><span class="num">05</span>Contact</h2>
-    <p>I'm open to roles in digital IC design, FPGA, and hardware for AI in Taiwan and Malaysia. Feel free to reach out.</p>
-    <div class="links">
-      <a class="btn primary" href="mailto:YOUR_EMAIL">Email me</a>
-      <a class="btn" href="LINKEDIN_URL">LinkedIn</a>
-      <a class="btn" href="https://github.com/vernyi2002">GitHub</a>
-    </div>
-  </section>
 </main>
 
-<footer>© 2026 Teo Vern Yi · Speaks English, Mandarin and Malay</footer>
+<footer>
+  <div class="wrap">© 2026 Teo Vern Yi</div>
+</footer>
 
 </body>
 </html>
